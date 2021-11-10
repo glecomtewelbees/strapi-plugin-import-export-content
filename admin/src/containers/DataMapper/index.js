@@ -25,6 +25,7 @@ function DataMapper({ analysis, target, onImport }) {
 
   const isSingleType = kind === "singleType";
   const [uploadAsDraft, setUploadAsDraft] = useState(options.draftAndPublish);
+  const [allowUpdateDelete, setAllowUpdateDelete] = useState(false);
 
   const filteredAttributes = useMemo(
     () => Object.keys(attributes).filter(filterIgnoreFields),
@@ -109,6 +110,7 @@ function DataMapper({ analysis, target, onImport }) {
           fields: mappedFields,
           items: importItems,
           asDraft: uploadAsDraft,
+          allowUpdateDelete,
         },
       });
 
@@ -146,16 +148,22 @@ function DataMapper({ analysis, target, onImport }) {
           <span className="mr-3">Count of Items to Import:</span>
           <strong>{kind === "singleType" ? 1 : importItems.length}</strong>
         </Row>
-        {options.draftAndPublish && (
-          <Row>
-            <Checkbox
-              message="Upload as Draft"
-              name="uploadAsDraft"
-              value={uploadAsDraft}
-              onChange={() => setUploadAsDraft(!uploadAsDraft)}
-            />
-          </Row>
-        )}
+        <Row>
+          {options.draftAndPublish && (
+              <Checkbox
+                message="Upload as Draft"
+                name="uploadAsDraft"
+                value={uploadAsDraft}
+                onChange={() => setUploadAsDraft(!uploadAsDraft)}
+              />
+          )}
+          <Checkbox
+            message="Allow Update and Delete"
+            name="allowUpdateDelete"
+            value={allowUpdateDelete}
+            onChange={() => setAllowUpdateDelete(!allowUpdateDelete)}
+          />
+        </Row>
         <Row>
           <Button label="Import Data" onClick={uploadData} />
           <Button
